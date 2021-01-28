@@ -9,6 +9,10 @@ import (
 type Logger struct {
 	Out io.Writer
 	// Format Format
+
+	// Verbose is used to set whether the logging output should be set to 'Debug' or not.
+	// As such, setting verbose to true is akin to having the logging level set as 'Debug', 
+	// with false being 'Informational'. This follows Dave Cheney's dicussion on Golang logging.
 	Verbose bool	
 }
 
