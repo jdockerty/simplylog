@@ -28,10 +28,10 @@ type Logger struct {
 func New() *Logger {
 	return &Logger{
 		Format: Format{
-			Timestamp: "15:04:05 02/01/2006",  // Default Go reference time
-			Type: "text",
+			Timestamp: "15:04:05 02/01/2006", // Default Go reference time
+			Type:      "text",
 		},
-		Out: os.Stderr,
+		Out:     os.Stderr,
 		Verbose: false,
 	}
 }
