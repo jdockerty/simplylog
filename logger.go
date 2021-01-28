@@ -20,3 +20,9 @@ func New() *Logger {
 		Verbose: false,
 	}
 }
+
+// SetOutput allows the user to specify a specific output, such as a file.
+// This defaults to stderr when using simplylog calling this.
+func (l *Logger) SetOutput(output io.Writer) {
+	l.Out = output
+}
