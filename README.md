@@ -1,9 +1,37 @@
 # SimplyLog
 
-A simple logging package that was inspired by an old article written by Dave Cheney on [Golang logging](https://dave.cheney.net/2015/11/05/lets-talk-about-logging). To summarise, a lot of logging packges offer too much functionality, a lot of the 'logging levels' are left unused. This leaves us with `Info` and `Debug`:
+A simple, lightweight logging package that was inspired by an old article written by Dave Cheney on [Golang logging](https://dave.cheney.net/2015/11/05/lets-talk-about-logging). To summarise, a lot of logging packges offer too much functionality, a bunch of the 'logging levels' are left unused. This leaves us with `Info` and `Debug`:
 
 * **Info** is utilised by the user of your program, it provides *information* about things which are useful to them.
 * **Debug** is put in place to aid another developer/support engineer who is required to troubleshoot the software that has been deployed or mainly for the actual development process - these should be used frequently throughout a program.
 
+
+This package is an attempt to remedy this, whilst also being a great exercise in implementing logging for myself.
+
 ## Usage
 
+Firstly, you should install the package using `go get`
+
+    go get -u github.com/jdockerty/simplylog
+```go
+package main
+
+import (
+    "github.com/jdockerty/simplylog"
+)
+
+func main() {
+	logger := simplylog.New()	
+
+	logger.Info("My informational message!")
+
+	// The package defaults to only printing out 'Info'.
+	logger.Debug("This will not be printed yet")
+
+	// Setting verbose to be true enables the printing of 'Debug' messages
+	logger.Verbose = true
+
+	logger.Debug("This will be printed, verbose is true!")
+}
+```
+This works much in the same way you would expect, although it gets straight to the point without any complex setup. If you wish to see `Debug` output then set the `Verbose` field to true, otherwise you do not have to change it.
