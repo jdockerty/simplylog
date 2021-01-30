@@ -1,0 +1,27 @@
+on:
+  push:
+    paths: # Only run the pipeline when the code or pipeline changes
+      - "*.go"
+      - ".github/workflows/*"
+
+name: Run unit tests
+jobs:
+  run-tests:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Go setup
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.15'
+
+      - name: Check Go version
+        run: go version
+
+      - name: Run Go vet
+        run: go vet ./...
+
+      - name: Run tests 
+        run: go test -race -v ./...
