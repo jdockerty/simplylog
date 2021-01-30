@@ -1,19 +1,26 @@
 package simplylog
 
 import (
+	"bufio"
+	"encoding/json"
+	"fmt"
 	"io"
 	"os"
 	"sync"
+	"time"
 )
 
-// Logger is the core component of simplylog.
+// Logger is the core component of simplylog. This wraps the various concepts together.
 type Logger struct {
+
+	// Message is the string you wish to print, plus a timestamp which is generated for you.
+	Message Msg
 
 	// Format provides configuration options for a few simple values that are used
 	// within the package.
 	Format Format
 
-	// Verbose is used to set whether the logging output should be set to 'Debug' or not.
+	// Verbose is used to set whether the logging output should be verbose or not.
 	// As such, setting verbose to true is akin to having the logging level set as 'Debug',
 	// with false being 'Informational'. This follows Dave Cheney's dicussion on Golang logging.
 	Verbose bool
@@ -24,6 +31,36 @@ type Logger struct {
 	m sync.Mutex
 }
 
+// Msg is used to encompass the string that is passed by the user. It combines a timestamp with a message
+// and will be outputed in a different format dependent on what format type is selected.
+type Msg struct {
+	Timestamp string `json:"timestamp"`
+	Content   string `json:"msg"`
+}
+
+func getMsg(content, formatType, timestampFormat, level string) string {
+
+	now := time.Now().Format(timestampFormat)
+
+	if formatType == "json" {
+		msg := &Msg{
+			Timestamp: now,
+			Content:   content,
+		}
+
+		jsonMsg, err := json.Marshal(msg)
+		if err != nil {
+			fmt.Println("Unable to marshal as JSON, defaulting to text")
+			getMsg(content, "text", timestampFormat, level)
+		}
+		return string(jsonMsg)
+	}
+
+	msg := fmt.Sprintf("[%s] %s, %s", level, now, content)
+	return msg
+
+}
+
 // New will create a new logger with the default settings.
 func New() *Logger {
 	return &Logger{
@@ -31,15 +68,53 @@ func New() *Logger {
 			Timestamp: "15:04:05 02/01/2006", // Default Go reference time
 			Type:      "text",
 		},
-		Out:     os.Stderr,
+		Out:     os.Stdout,
 		Verbose: false,
 	}
 }
 
 // SetOutput allows the user to specify a specific output, such as a file.
-// This defaults to stderr when using simplylog calling this.
+// This defaults to 'stdout' without using this function.
 func (l *Logger) SetOutput(output io.Writer) {
 	l.m.Lock()
 	l.Out = output
 	l.m.Unlock()
+}
+
+// Info is used to print out logs that are considered 'informational', aiding anyone
+// who is using the program.
+func (l *Logger) Info(args ...interface{}) {
+
+	msgContent := fmt.Sprint(args...)
+	msg := getMsg(msgContent, l.Format.Type, l.Format.Timestamp, "INFO")
+
+	sendLog(l, msg)
+}
+
+// Debug is used to print out logs that are used by other engineers, as you might expect
+// for debugging purposes when trying to understand what has occurred in a system.
+func (l *Logger) Debug(args ...interface{}) {
+
+	if l.Verbose {
+		msgContent := fmt.Sprint(args...)
+		msg := getMsg(msgContent, l.Format.Type, l.Format.Timestamp, "DEBUG")
+
+		sendLog(l, msg)
+	}
+
+}
+
+// Check where the output should be sent to, prior to writing it.
+func sendLog(logger *Logger, msg string) {
+	if logger.Out != os.Stdout {
+		w := bufio.NewWriter(logger.Out)
+		logger.m.Lock()
+
+		w.Write([]byte(msg))
+		w.Flush()
+
+		logger.m.Unlock()
+	} else {
+		fmt.Println(msg)
+	}
 }
