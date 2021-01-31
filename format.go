@@ -35,15 +35,18 @@ func (f *Format) SetType(formatType string) {
 // place your desired format using this specific reference time.
 func (f *Format) SetTimestamp(timestampFormat string) {
 
-	now := time.Now().String()
-
-	defaultFormat := "15:04:05 02/01/2006"
+	now := time.Now().Format(timestampFormat)
 
 	_, err := time.Parse(timestampFormat, now)
 	if err != nil {
-		fmt.Printf("Invalid time format, setting default: %s\n", err)
+		fmt.Printf("Error parsing time, setting default: %s\n", err)
+
+		defaultFormat := "15:04:05 02/01/2006"
 		f.Timestamp = defaultFormat
 		return
+
 	}
+
+	f.Timestamp = timestampFormat
 
 }
