@@ -35,3 +35,35 @@ func main() {
 }
 ```
 This works much in the same way you would expect, although it gets straight to the point without any complex setup. If you wish to see `Debug` output then set the `Verbose` field to true, otherwise you do not have to change it.
+
+A more configured example, would be something along the lines of
+
+```go
+package main
+
+import (
+	"github.com/jdockerty/simplylog"
+	"os"
+)
+
+func main() {
+
+	logger := simplylog.New()
+
+	logger.Verbose = true
+	logger.Format.SetType("JSON")
+	logger.Format.SetTimestamp("2006/1/2 15:04")
+
+	f, err := os.OpenFile("program-output.log", os.O_RDWR|os.O_CREATE, 0755)
+	if err != nil {
+		// Handle error
+	}
+
+	logger.SetOutput(f)
+
+	logger.Info("My informational message!")
+
+	logger.Debug("Debug output for my development process.")
+
+}
+```
