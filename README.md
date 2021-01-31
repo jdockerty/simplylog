@@ -8,12 +8,13 @@ A simple, lightweight logging package that was inspired by an old article writte
 
 This package is an attempt to remedy this, whilst also being a great exercise in implementing logging for myself.
 
-## Usage
+## Installation
 
 Firstly, you should install the package using `go get`
 
     go get -u github.com/jdockerty/simplylog
 
+## Usage
 A simple example of how this package works can be seen below
 ```go
 package main
