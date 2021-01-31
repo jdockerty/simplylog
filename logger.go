@@ -13,27 +13,28 @@ import (
 // Logger is the core component of simplylog. This wraps the various concepts together.
 type Logger struct {
 
-	// Message is the string you wish to print, plus a timestamp which is generated for you.
-	Message Msg
-
-	// Format provides configuration options for a few simple values that are used
-	// within the package.
-	Format Format
-
 	// Verbose is used to set whether the logging output should be verbose or not.
 	// As such, setting verbose to true is akin to having the logging level set as 'Debug',
 	// with false being 'Informational'. This follows Dave Cheney's dicussion on Golang logging.
 	Verbose bool
 
+	// Format provides configuration options for a few simple values that are used
+	// within the package.
+	Format Format
+
 	// Out is the output
 	Out io.Writer
 
+	// Message is the string you wish to print, plus a timestamp which is generated for you.
+	message msg
+
+	// Mutex is mainly used when writing output to files.
 	m sync.Mutex
 }
 
-// Msg is used to encompass the string that is passed by the user. It combines a timestamp with a message
+// msg is used to encompass the string that is passed by the user. It combines a timestamp with a message
 // and will be outputed in a different format dependent on what format type is selected.
-type Msg struct {
+type msg struct {
 	Timestamp string `json:"timestamp"`
 	Content   string `json:"msg"`
 }
@@ -43,7 +44,7 @@ func getMsg(content, formatType, timestampFormat, level string) string {
 	now := time.Now().Format(timestampFormat)
 
 	if formatType == "json" {
-		msg := &Msg{
+		msg := &msg{
 			Timestamp: now,
 			Content:   content,
 		}
