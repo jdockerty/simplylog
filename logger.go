@@ -110,7 +110,7 @@ func sendLog(logger *Logger, msg string) {
 		w := bufio.NewWriter(logger.Out)
 		logger.m.Lock()
 
-		w.Write([]byte(msg))
+		w.Write([]byte(msg + "\n"))
 		w.Flush()
 
 		logger.m.Unlock()
