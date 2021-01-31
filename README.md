@@ -67,3 +67,5 @@ func main() {
 
 }
 ```
+
+This uses an output file, customised timestamp format, and setting the format type to `JSON`, rather than plain text output that you would be accustom to in a terminal. Setting the output to `JSON` is more compatible when another program is required to ingest the logs.
