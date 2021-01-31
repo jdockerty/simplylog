@@ -54,7 +54,7 @@ func main() {
 	logger.Format.SetType("JSON")
 	logger.Format.SetTimestamp("2006/1/2 15:04")
 
-	f, err := os.OpenFile("program-output.log", os.O_RDWR|os.O_CREATE, 0755)
+	f, err := os.OpenFile("program-output.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0755)
 	if err != nil {
 		// Handle error
 	}
