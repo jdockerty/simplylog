@@ -91,12 +91,33 @@ func (l *Logger) Info(args ...interface{}) {
 	sendLog(l, msg)
 }
 
+// Infof is used to print a formatted string to the log, the same concept apply as per the Info function.
+func (l *Logger) Infof(format string, args ...interface{}) {
+
+	msgContent := fmt.Sprintf(format, args...)
+	msg := getMsg(msgContent, l.Format.Type, l.Format.Timestamp, "INFO")
+
+	sendLog(l, msg)
+}
+
 // Debug is used to print out logs that are used by other engineers, as you might expect
 // for debugging purposes when trying to understand what has occurred in a system.
 func (l *Logger) Debug(args ...interface{}) {
 
 	if l.Verbose {
 		msgContent := fmt.Sprint(args...)
+		msg := getMsg(msgContent, l.Format.Type, l.Format.Timestamp, "DEBUG")
+
+		sendLog(l, msg)
+	}
+
+}
+
+// Debugf is used to print a formatted string to the log, the same concept apply as per the Debug function.
+func (l *Logger) Debugf(format string, args ...interface{}) {
+
+	if l.Verbose {
+		msgContent := fmt.Sprintf(format, args...)
 		msg := getMsg(msgContent, l.Format.Type, l.Format.Timestamp, "DEBUG")
 
 		sendLog(l, msg)
