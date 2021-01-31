@@ -3,7 +3,7 @@
 A simple, lightweight logging package that was inspired by an old article written by Dave Cheney on [Golang logging](https://dave.cheney.net/2015/11/05/lets-talk-about-logging). To summarise, a lot of logging packges offer too much functionality, a bunch of the 'logging levels' are left unused. This leaves us with `Info` and `Debug`:
 
 * **Info** is utilised by the user of your program, it provides *information* about things which are useful to them.
-* **Debug** is put in place to aid another developer/support engineer who is required to troubleshoot the software that has been deployed or mainly for the actual development process - these should be used frequently throughout a program.
+* **Debug** is put in place to aid another developer/support engineer who is required to troubleshoot the software that has been deployed or to aid yourself in the actual development process - these should be used frequently throughout a program.
 
 
 This package is an attempt to remedy this, whilst also being a great exercise in implementing logging for myself.
@@ -13,6 +13,8 @@ This package is an attempt to remedy this, whilst also being a great exercise in
 Firstly, you should install the package using `go get`
 
     go get -u github.com/jdockerty/simplylog
+
+A simple example of how this package works can be seen below
 ```go
 package main
 
@@ -68,4 +70,4 @@ func main() {
 }
 ```
 
-This uses an output file, customised timestamp format, and setting the format type to `JSON`, rather than plain text output that you would be accustom to in a terminal. Setting the output to `JSON` is more compatible when another program is required to ingest the logs. When using a custom timestamp format, remember that the format should be in the specified Go reference time, otherwise you may see unexpected results.
+This uses an output file, customised timestamp format, and setting the format type to `JSON`, rather than plain text output that you would be accustom to in the terminal. Setting the output to `JSON` is more compatible when another program is required to ingest the logs. When using a custom timestamp format, remember that the format should be in the specified Go reference time, otherwise you may see unexpected results.
