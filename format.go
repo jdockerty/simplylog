@@ -3,7 +3,6 @@ package simplylog
 import (
 	"fmt"
 	"strings"
-	"time"
 )
 
 // Format is used to provide configuration for different options.
@@ -35,15 +34,6 @@ func (f *Format) SetType(formatType string) {
 // place your desired format using this specific reference time.
 func (f *Format) SetTimestamp(timestampFormat string) {
 
-	now := time.Now().String()
-
-	defaultFormat := "15:04:05 02/01/2006"
-
-	_, err := time.Parse(timestampFormat, now)
-	if err != nil {
-		fmt.Printf("Invalid time format, setting default: %s\n", err)
-		f.Timestamp = defaultFormat
-		return
-	}
+	f.Timestamp = timestampFormat
 
 }
