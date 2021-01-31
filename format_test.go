@@ -1,10 +1,10 @@
 package simplylog_test
 
 import (
-	"testing"
-	"time"
 	"github.com/jdockerty/simplylog"
 	"github.com/stretchr/testify/assert"
+	"testing"
+	"time"
 )
 
 var (
