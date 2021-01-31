@@ -92,7 +92,7 @@ func (l *Logger) Info(args ...interface{}) {
 	sendLog(l, msg)
 }
 
-// Infof is used to print a formatted string to the log, the same concept apply as per the Info function.
+// Infof is used to print a formatted string to the log, the same concepts apply as per the Info function.
 func (l *Logger) Infof(format string, args ...interface{}) {
 
 	msgContent := fmt.Sprintf(format, args...)
@@ -114,7 +114,7 @@ func (l *Logger) Debug(args ...interface{}) {
 
 }
 
-// Debugf is used to print a formatted string to the log, the same concept apply as per the Debug function.
+// Debugf is used to print a formatted string to the log, the same concepts apply as per the Debug function.
 func (l *Logger) Debugf(format string, args ...interface{}) {
 
 	if l.Verbose {
